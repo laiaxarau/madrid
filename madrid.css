@@ -657,3 +657,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   /* Filter label menys ample */
   .filter-lbl { width: 44px; font-size: 10px; }
 }
+.node-pdf {
+  display: block;
+  margin-top: 4px;
+}

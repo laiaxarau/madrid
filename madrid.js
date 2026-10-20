@@ -95,7 +95,7 @@ const FLOWS = {
   dijous: {
     title: "DIJOUS · 5 DE NOVEMBRE",
     nodes: [
-      { k:"fix", e:"✈️", h:"12:17", tit:"Arribes a Atocha", note:"No podeu entrar a l'hostal fins les 14h" },
+      { k:"fix", e:"✈️", h:"12:17", tit:"Arribes a Atocha", note:"No podeu entrar a l'hostal fins les 14h. Què feu?" },
       { k:"dec", q:"Aneu al centre i cap a la aventura? O dineu un bocata de calamares a El Brillante?",
         opts:[
           { l:"A", tit:"Al centre!",    det:"Agafeu el cercanías · Visiteu Plaza del Sol · Busqueu un lloc on dinar",          act:"sel", ctx:{zona:"Centro/Plaza Mayor", tipus:"dinar"} },
@@ -103,13 +103,17 @@ const FLOWS = {
         ]},
       { k:"fix", e:"🏨", h:"14:00", tit:"Deixeu maletes a l'hotel" },
       { k:"fix", e:"☀️", h:"14:30", tit:"Puerta del Sol", note:"El km 0 de les carreteres", detail:"sol" },
-      { k:"fix", e:"🏛️", h:"15:00", tit:"Plaza Mayor", note:"Arcs, estàtua de Felip III i l'ambient dels Àustries", detail:"plaza-mayor" },
-      { k:"fix", e:"🌅", h:"18:00", tit:"Posta de sol al Templo de Debod", note:"No us el perdeu — una de les millors vistes de Madrid", loc:"Templo de Debod Madrid", detail:"debod" },
-      { k:"dec", q:"On sopeu avui?",
+      { k:"fix", e:"🏛️", h:"15:00", tit:"Plaza Mayor", note:"Arcs, estàtua de Felip III i 237 balcons", detail:"plaza-mayor" },
+{ k:"fix", e:"🌅", h:"18:00", tit:"Posta de sol al Templo de Debod", note:"No us el podeu perdre. Teniu entrada a les 18:30 i al parc podeu veure una de les millors vistes de Madrid", loc:"Templo de Debod Madrid", detail:"debod",
+  pdfs:[
+    { label:"Entrada 1", url:"https://drive.google.com/file/d/1_I3NGCF17eruWZh3BlnYL6_fspUMuL-u/view?usp=drive_link" },
+    { label:"Entrada 2", url:"https://drive.google.com/file/d/1RWB6cLu0Sv1Bw6YJ09S-AJbLsdn66m_A/view?usp=drive_link" }
+  ]
+},      { k:"dec", q:"On sopeu avui?",
         opts:[
           { l:"A", tit:"Las Letras",  det:"Torneu cap a l'hotel i sopeu al barrio de las letras",        act:"sel", ctx:{zona:"Las Letras",  tipus:"sopar"} },
           { l:"B", tit:"Malasaña",    det:"Us quedeu per Malasaña, prop de Debod",                       act:"sel", ctx:{zona:"Malasaña",    tipus:"sopar"} },
-          { l:"C", tit:"La Latina",   det:"No queda gaire a prop de Debod, però ara hi esteu a prop",    act:"sel", ctx:{zona:"La Latina",   tipus:"sopar"} }
+          { l:"C", tit:"La Latina",   det:"No queda gaire a prop de Debod, però ara probablement no torneu a estar-hi tan a prop.",    act:"sel", ctx:{zona:"La Latina",   tipus:"sopar"} }
         ]}
     ]
   },
@@ -234,6 +238,9 @@ function nodeHTML(n) {
       : n.loc
         ? `<a class="node-maps" href="${mapsUrl(n.loc)}" target="_blank" rel="noopener">📍 Obre a Maps</a>`
         : "";
+    const pdfsHTML = (n.pdfs || []).map(pdf =>
+      `<a class="node-maps node-pdf" href="${pdf.url}" target="_blank" rel="noopener">🎟️ ${pdf.label}</a>`
+    ).join("");
     return `<div class="node-fixed">
       <div class="node-icon">${n.e || "📍"}</div>
       <div class="node-body">
@@ -241,6 +248,7 @@ function nodeHTML(n) {
         <div class="node-title">${n.tit}</div>
         ${n.note ? `<div class="node-note">${n.note}</div>` : ""}
         ${link}
+        ${pdfsHTML}
       </div>
     </div>`;
   }
@@ -402,7 +410,7 @@ const PLACES = {
     emoji:"🖼️", nom:"Museo del Prado",
     tipus:"Museu Nacional", zona:"Passeig del Prado",
     horari:"Di–Di 10–20h · Dg 10–19h · Dl tancat",
-    preu:"15€ · gratuït festius 17–19h",
+    preu:"15€ · gratuït 17–19h",
     loc:"Museo del Prado Madrid",
     desc:`El prado conté una de les coleccions més importants d'art del món. Hi ha alguns autors destacats de la pintura espanyola no tan coneguts com Goya o Velázquez, però d'una qualitat excepcional, com Greco, Murillo, Zurbarán, Ribera o Sorolla. Per no mencionar figures internacionals com Rubens, Tiziano o Fra Angelico.`,
     sections:[
@@ -417,7 +425,7 @@ const PLACES = {
       { tit:"Goya, més enllà d'aquest quadre: Les pintures negres",
         body:`Si tenim temps, busquem altres obres de Goya. La seva pintura va evolucionar des dels retrats i les escenes de la vida quotidiana fins a imatges molt més fosques i personals. És interessant veure com un mateix artista pot passar de la llum a la inquietud.<br><br>No cal sortir del Prado amb la sensació d'haver-ho vist tot. Si recordem tres o quatre obres i hem pogut parlar del que ens transmeten, haurà valgut la pena.<br><br><strong>Cronologia i context:</strong> Van ser pintades entre 1819 i 1823. En aquests anys, Goya era un home vell, aïllat, profundament afectat per la sordesa i desenganyat pel clima polític opressor de Ferran VII i la repressió a Espanya.<br><br><strong>Tècnica i origen:</strong> Són 14 pintures fetes amb tècnica mixta (oli al secco i tremp gras) sobre els guixos de les parets de la casa (distribuïdes entre la planta baixa i el pis superior).<br><br><strong>Trasllat a llenç:</strong> Com que eren murals a la paret, l'any 1874 van ser arrencades i traslladades a llenç per Salvador Martínez Cubells per encàrrec del baró Frédéric Émile d'Erlanger.<br><br><strong>Temàtica i estil:</strong> Tenen un cromatisme fosc dominat pels negres, ocres i grisos. Les escenes són tètriques, fantàstiques i carregades d'angoixa (bruixeria, vellesa, la mort, la follia o la violència).<br><br><strong>Obres més destacades:</strong> Saturn devorant un fill · El aquelarre (o El gran cabrón) · El gos semihundit (Perro semihundido) · El duel a garrotazos (Duelo a garrotazos) · Asmodea · Les Parques (Átropos).<br><br><strong>Significat històric:</strong> No van ser concebudes per ser venudes ni exposades al públic; eren per a la intimitat de la seva casa. Avui dia es consideren una obra avançada a la seva època i un precursor directe de l'expressionisme i de la pintura moderna.` }
     ],
-    tips:["Reserveu l'entrada en línia — les cues sense reserva poden ser molt llargues.",
+    tips:["Reserveu l'entrada en línia (Paseo del Arte) — les cues sense reserva poden ser molt llargues.",
           "Busqueu directament Las Meninas (sala 12), El jardí de les delícies (sala 56A) i El 3 de mayo (sala 64).",
           "L'audioguia gratuïta de l'app del Prado val molt la pena per entendre el context.",
           "El Jardí Botànic al costat és ideal per descansar i prendre l'aire."]
@@ -441,7 +449,7 @@ const PLACES = {
     ],
     tips:["El Brillante, just davant de la porta de l'Alfons XII, serveix el millor bocata de calamares de Madrid.",
           "Podeu llogar una barca al gran estanc — molt recomanable si fa bon temps.",
-          "El Palacio de Cristal és en reformes fins al 2027; el Palacio de Velázquez s'hi pot visitar.",
+          "El Palacio de Cristal és en reformes fins al 2027; el Palacio de Velázquez sí es pot visitar.",
           "Metro: Retiro (L2), Ibiza (L9) o Príncipe de Vergara (L2/L9)."]
   },
   debod: {
@@ -450,14 +458,14 @@ const PLACES = {
     horari:"Dt–Vi 10–14h i 18–20h · Sa–Dg 10–14h · Dl: tancat",
     preu:"Gratuït",
     loc:"Templo de Debod Madrid",
-    desc:`Decidiu anar a veure la posta de sol des del Templo de Debod.<br><br>Teniu 20 minuts caminant des de la plaza Mayor. Segons Google, amb metro son 23 minuts, però hi ha uns 20 minuts de caminar.<br><br>Caminant passem pel Teatro Real o per la plaza de Oriente, entre el teatre i el Palacio Real.<br><br>és un autèntic temple de l'antic Egipte amb més de 2.200 anys d'història.`,
+    desc:`Des de Plaza Mayor, teniu 20 minuts caminant. Segons Google, podem anar amb metro i tardemn 23 minuts, però 20 minuts d'aquests minuts són de caminar. El trajecte amb metro són 3 minuts 😅<br><br>Caminant passem pel Teatro Real o per la plaza de Oriente, entre el teatre i el Palacio Real.<br><br>és un autèntic temple de l'antic Egipte amb més de 2.200 anys d'història.`,
     sections:[
       { tit:"Origen i Història",
         body:`Regal d'Egipte: Va ser donat a Espanya el 1968 pel govern egipci. Es va lliurar com a agraïment per l'ajuda espanyola per salvar els temples de Núbia (com Abu Simbel) després de la construcció de la Presa d'Asuan.<br><br>Construcció original: La seva capella més antiga va ser iniciada al segle II a. C. (cap al 200–180 a. C.) pel rei nubi Adijalamani de Meroe i dedicada als déus Amón i Isis. Més endavant, els ptolemaics i emperadors romans (com August i Tiberi) van ampliar el recinte.<br><br>Arribada a Madrid: Es va desmuntar pedra a pedra i es va reconstruir a Espanya, obrint el públic el 1972. Es va col·locar respectant la seva orientació original d'est a oest.` }
     ],
     tips:["Teniu entrada reservada a les 18:30 — confirmeu l'hora el dia anterior.",
           "Arribeu 15–20 minuts abans per trobar lloc al mirador.",
-          "Les vistes amb la llum daurada de la tarda sobre la serralada són increïbles.",
+          "El sol es pondrà a les 18:07.Les vistes amb la llum daurada de la tarda sobre la serralada són increïbles.",
           "Podeu caminar des de la Plaza Mayor passant pel Teatro Real i la Plaza de Oriente (~20 min)."]
   },
   sol: {
