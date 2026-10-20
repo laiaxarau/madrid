@@ -95,7 +95,7 @@ const FLOWS = {
   dijous: {
     title: "DIJOUS · 5 DE NOVEMBRE",
     nodes: [
-      { k:"fix", e:"✈️", h:"12:17", tit:"Arribes a Atocha", note:"No podeu entrar a l'hostal fins les 14h. Què feu?" },
+      { k:"fix", e:"✈️", h:"12:17", tit:"Arribeu a Atocha", note:"No podeu entrar a l'hostal fins les 14h. Què feu?" },
       { k:"dec", q:"Aneu al centre i cap a la aventura? O dineu un bocata de calamares a El Brillante?",
         opts:[
           { l:"A", tit:"Al centre!",    det:"Agafeu el cercanías · Visiteu Plaza del Sol · Busqueu un lloc on dinar",          act:"sel", ctx:{zona:"Centro/Plaza Mayor", tipus:"dinar"} },
