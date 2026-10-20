@@ -609,10 +609,12 @@ function renderDetail(key) {
 }
 
 /* ══ SELECTOR ══════════════════════════════════════════════ */
-const ZONES    = ["Las Letras","Centro/Plaza Mayor","Malasaña","La Latina","Retiro-Prado","Lavapiés","Chueca"];
+const ZONES    = ["Fora del centre","Las Letras","Centro/Plaza Mayor","Malasaña","La Latina","Retiro-Prado","Lavapiés","Chueca"];
 const TIPUSL   = ["esmorzar","dinar","sopar","copa","pausa"];
 const PREUL    = ["baix","mig","alt"];
 const AMBIENTL = ["informal","formal"];
+
+const zonaLabel = r => (r.z && r.z.trim()) || "Fora del centre";
 
 function openSel(ctx) {
   fil.zona    = ctx.zona    || null;
@@ -644,15 +646,17 @@ function renderRes() {
   const PS = { baix:"€", mig:"€€", alt:"€€€" };
   let list = REST.filter(r => {
     if (r.tancat) return false;
-    if (fil.zona    && r.z !== fil.zona)          return false;
+    const z = zonaLabel(r);
+    if (fil.zona    && z !== fil.zona)            return false;
     if (fil.tipus   && !r.t.includes(fil.tipus))  return false;
     if (fil.preu    && r.p !== fil.preu)           return false;
     if (fil.ambient && r.a !== fil.ambient)        return false;
     return true;
   });
   list.sort((a,b) => {
-    if (a.z && !b.z) return -1;
-    if (!a.z && b.z) return 1;
+    const za = zonaLabel(a);
+    const zb = zonaLabel(b);
+    if (za !== zb) return za.localeCompare(zb, "ca");
     return a.n.localeCompare(b.n, "ca");
   });
   document.getElementById("res-count").textContent =
@@ -664,7 +668,8 @@ function renderRes() {
   }
   document.getElementById("r-list").innerHTML = list.map(r => {
     const url  = mapsUrl(r.n + " Madrid");
-    const meta = [r.z, r.t.join(" · ")].filter(Boolean);
+    const z = zonaLabel(r);
+    const meta = [z, r.t.join(" · ")].filter(Boolean);
     return `<div class="r-card">
       <div class="r-info">
         <div class="r-name">${r.n}</div>
