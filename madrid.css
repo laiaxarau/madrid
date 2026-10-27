@@ -661,3 +661,5 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   display: block;
   margin-top: 4px;
 }
+/* Netlify badge */
+iframe[src*="netlify.com"] { display: none !important; }

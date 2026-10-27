@@ -113,7 +113,8 @@ const FLOWS = {
         opts:[
           { l:"A", tit:"Las Letras",  det:"Torneu cap a l'hotel i sopeu al barrio de las letras",        act:"sel", ctx:{zona:"Las Letras",  tipus:"sopar"} },
           { l:"B", tit:"Malasaña",    det:"Us quedeu per Malasaña, prop de Debod",                       act:"sel", ctx:{zona:"Malasaña",    tipus:"sopar"} },
-          { l:"C", tit:"La Latina",   det:"No queda gaire a prop de Debod, però ara probablement no torneu a estar-hi tan a prop.",    act:"sel", ctx:{zona:"La Latina",   tipus:"sopar"} }
+          { l:"C", tit:"La Latina",   det:"No queda gaire a prop de Debod, però ara probablement no torneu a estar-hi tan a prop.",    act:"sel", ctx:{zona:"La Latina",   tipus:"sopar"} },
+          { l:"D", tit:"Bloom",       det:"Dijous fan jazz en viu — sopar i espectacle",                 act:"url", url:"https://maps.app.goo.gl/LLECj44cf9AM6wST8" }
         ]}
     ]
   },
@@ -291,6 +292,15 @@ function nodeHTML(n) {
             <span class="opt-tag">🍽️ obre el selector</span>
           </div>
         </button>`;
+      } else if (o.act === "url" && o.url) {
+        return `<a class="opt" href="${o.url}" target="_blank" rel="noopener">
+          <div class="opt-badge">${o.l}</div>
+          <div class="opt-content">
+            <div class="opt-title">${o.tit}</div>
+            ${o.det ? `<div class="opt-detail">${o.det}</div>` : ""}
+            <span class="opt-tag">📍 obre a Maps</span>
+          </div>
+        </a>`;
       } else if (o.act === "detail" && o.detail) {
         return `<button class="opt" onclick='goDetail("${o.detail}")'>
           <div class="opt-badge">${o.l}</div>
