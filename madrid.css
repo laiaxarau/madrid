@@ -662,4 +662,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
   margin-top: 4px;
 }
 /* Netlify badge */
-iframe[src*="netlify.com"] { display: none !important; }
+iframe[src*="netlify.com"],
+img[src*="netlify.com"],
+[data-netlify-badge],
+.netlify-badge { display: none !important; }
