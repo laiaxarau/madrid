@@ -204,9 +204,7 @@ button { cursor: pointer; border: none; background: none; font: inherit; color: 
 .hero-skyline {
   display: block; width: 100%; max-width: 480px;
   margin: 18px auto 0;
-  filter: grayscale(1) contrast(3) invert(1);
-  mix-blend-mode: screen;
-  opacity: .45;
+  opacity: .30;
   pointer-events: none;
 }
 
