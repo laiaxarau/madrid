@@ -335,15 +335,18 @@ function nodeHTML(n) {
   return "";
 }
 
-function revealGroup(groupEl) {
+function revealGroup(groupEl, scrollToFirst) {
   const steps = groupEl.querySelectorAll('.flow-step');
   steps.forEach((s, i) => {
     setTimeout(() => {
       requestAnimationFrame(() => requestAnimationFrame(() => s.classList.add('revealed')));
     }, i * 80);
   });
-  const last = steps[steps.length - 1];
-  if (last) setTimeout(() => last.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), steps.length * 80 + 60);
+  // Si és un grup nou (CONTINUA premut), fem scroll al primer element visible
+  // perquè l'usuari vegi el nou contingut des del principi, no des del final
+  if (scrollToFirst && steps.length > 0) {
+    setTimeout(() => steps[0].scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+  }
 }
 
 function renderDay(key) {
@@ -411,7 +414,7 @@ function continua(btn) {
   btn.classList.add('hidden-btn');
   const curGroup = btn.closest('.flow-group');
   const nextGroup = curGroup.nextElementSibling;
-  if (nextGroup) revealGroup(nextGroup);
+  if (nextGroup) revealGroup(nextGroup, true);
 }
 
 /* ══ LLOCS ══════════════════════════════════════════════════ */
