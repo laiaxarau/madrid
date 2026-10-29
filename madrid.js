@@ -342,10 +342,11 @@ function revealGroup(groupEl, scrollToFirst) {
       requestAnimationFrame(() => requestAnimationFrame(() => s.classList.add('revealed')));
     }, i * 80);
   });
-  // Si és un grup nou (CONTINUA premut), fem scroll al primer element visible
-  // perquè l'usuari vegi el nou contingut des del principi, no des del final
+  // Si és un grup nou (CONTINUA premut), fem scroll al primer node de contingut
+  // (saltem la flow-line inicial) i compensem el header enganxat via scroll-margin-top CSS
   if (scrollToFirst && steps.length > 0) {
-    setTimeout(() => steps[0].scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
+    const target = Array.from(steps).find(s => !s.classList.contains('flow-line')) || steps[0];
+    setTimeout(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }), 80);
   }
 }
 
