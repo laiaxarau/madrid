@@ -13,6 +13,7 @@ const REST = [
   {n:"Café Comercial",               z:"Malasaña",          t:["esmorzar","dinar","pausa"],  p:"mig",  a:"informal", nota:"Des de 1887"},
   {n:"Sobrino de Botín",             z:"Centro/Plaza Mayor",t:["dinar","sopar"],             p:"alt",  a:"formal",   nota:"Restaurant més antic del món (1725)"},
   {n:"Casa Labra",                   z:"Centro/Plaza Mayor",t:["dinar","copa"],              p:"baix", a:"informal", nota:"Bacallà fregit"},
+  {n:"Bloom",                        z:"Malasaña",          t:["sopar"],                     p:"mig",  a:"informal", nota:"Jazz en viu els dijous · Calle de los Reyes 4", maps:"https://maps.app.goo.gl/LLECj44cf9AM6wST8"},
   {n:"Trattoria Fratelli Figurato",  z:"Malasaña",          t:["dinar","sopar"],             p:"mig",  a:"informal", nota:"Top 50 Pizza Europa"},
   {n:"NAP Pizzeria",                 z:"",                  t:["dinar","sopar"],             p:"mig",  a:"informal"},
   {n:"Circolo Popolare Madrid",      z:"",                  t:["dinar","sopar"],             p:"alt",  a:"informal"},
@@ -111,10 +112,10 @@ const FLOWS = {
   ]
 },      { k:"dec", q:"On sopeu avui?",
         opts:[
-          { l:"A", tit:"Las Letras",  det:"Torneu cap a l'hotel i sopeu al barrio de las letras",        act:"sel", ctx:{zona:"Las Letras",  tipus:"sopar"} },
-          { l:"B", tit:"Malasaña",    det:"Us quedeu per Malasaña, prop de Debod",                       act:"sel", ctx:{zona:"Malasaña",    tipus:"sopar"} },
-          { l:"C", tit:"La Latina",   det:"No queda gaire a prop de Debod, però ara probablement no torneu a estar-hi tan a prop.",    act:"sel", ctx:{zona:"La Latina",   tipus:"sopar"} },
-          { l:"D", tit:"Bloom",       det:"Dijous fan jazz en viu — sopar i espectacle",                 act:"url", url:"https://maps.app.goo.gl/LLECj44cf9AM6wST8" }
+          { l:"A", tit:"Bloom",       det:"Dijous fan jazz en viu — sopar i espectacle al Malasaña",     act:"sel", ctx:{zona:"Malasaña", nom:"Bloom"} },
+          { l:"B", tit:"Las Letras",  det:"Torneu cap a l'hotel i sopeu al barrio de las letras",        act:"sel", ctx:{zona:"Las Letras",  tipus:"sopar"} },
+          { l:"C", tit:"Malasaña",    det:"Us quedeu per Malasaña, prop de Debod",                       act:"sel", ctx:{zona:"Malasaña",    tipus:"sopar"} },
+          { l:"D", tit:"La Latina",   det:"No queda gaire a prop de Debod, però ara probablement no torneu a estar-hi tan a prop.",    act:"sel", ctx:{zona:"La Latina",   tipus:"sopar"} }
         ]}
     ]
   },
@@ -681,7 +682,7 @@ function renderRes() {
     return;
   }
   document.getElementById("r-list").innerHTML = list.map(r => {
-    const url  = mapsUrl(r.n + " Madrid");
+    const url  = r.maps || mapsUrl(r.n + " Madrid");
     const z = zonaLabel(r);
     const meta = [z, r.t.join(" · ")].filter(Boolean);
     return `<div class="r-card">
