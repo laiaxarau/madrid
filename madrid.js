@@ -699,3 +699,111 @@ function renderRes() {
 
 /* ══ INIT ═══════════════════════════════════════════════════ */
 showView("v-home");
+
+/* ══ MAPA ═══════════════════════════════════════════════════ */
+function goMap() {
+  prevView = curView; prevDay = curDay;
+  curView = "map"; curDay = null;
+  renderMap();
+  showView("v-map");
+}
+
+function renderMap() {
+  const svg = document.getElementById("map-svg");
+  if (svg.dataset.rendered) return;
+  svg.dataset.rendered = "1";
+
+  const LNG0=-3.724, LNG1=-3.678, LAT0=40.401, LAT1=40.436, W=760, H=700;
+  function px(lat, lng) {
+    return [(lng - LNG0) / (LNG1 - LNG0) * W,
+            (1 - (lat - LAT0) / (LAT1 - LAT0)) * H];
+  }
+  function polyline(pts, color, dash) {
+    const d = pts.map((p, i) => (i ? "L" : "M") + px(p[0], p[1]).join(" ")).join(" ");
+    const el = document.createElementNS("http://www.w3.org/2000/svg", "path");
+    el.setAttribute("d", d); el.setAttribute("fill", "none");
+    el.setAttribute("stroke", color); el.setAttribute("stroke-width", "4");
+    if (dash) el.setAttribute("stroke-dasharray", "8 5");
+    el.setAttribute("stroke-linecap", "round"); el.setAttribute("stroke-linejoin", "round");
+    return el;
+  }
+
+  const BUS001 = [[40.4066,-3.6894],[40.4090,-3.6940],[40.4138,-3.6923],[40.4160,-3.6948],
+    [40.4193,-3.6967],[40.4203,-3.7030],[40.4190,-3.7060],[40.4175,-3.7072],
+    [40.4154,-3.7074],[40.4120,-3.7085],[40.4100,-3.7100],[40.4083,-3.7115],[40.4050,-3.7130]];
+  const BUS002 = [[40.4070,-3.7100],[40.4090,-3.7085],[40.4113,-3.7070],[40.4147,-3.7006],
+    [40.4168,-3.7038],[40.4193,-3.6967],[40.4215,-3.6978],[40.4245,-3.6990],
+    [40.4268,-3.7044],[40.4260,-3.7100],[40.4250,-3.7120],[40.4234,-3.7125]];
+
+  const line001 = polyline(BUS001, "#C8364A", false); line001.id = "bus-001";
+  const line002 = polyline(BUS002, "#4A82D4", true);  line002.id = "bus-002";
+  svg.appendChild(line001);
+  svg.appendChild(line002);
+
+  const STOPS = [
+    {n:1,  t:"12:17 h", name:"Madrid-Atocha · Arribada",             lat:40.4066, lng:-3.6894},
+    {n:2,  t:"13:15 h", name:"Hostal Madrid Sol · Príncipe, 18",     lat:40.4150, lng:-3.7010},
+    {n:3,  t:"14:15 h", name:"Puerta del Sol",                        lat:40.4168, lng:-3.7038},
+    {n:4,  t:"15:00 h", name:"Plaza Mayor",                           lat:40.4154, lng:-3.7074},
+    {n:5,  t:"16:00 h", name:"Chocolatería San Ginés",                lat:40.4172, lng:-3.7069},
+    {n:6,  t:"17:00 h", name:"Barrio de las Letras · Pl. Santa Ana", lat:40.4147, lng:-3.7000},
+    {n:7,  t:"10:00 h", name:"Museo del Prado",                       lat:40.4138, lng:-3.6923},
+    {n:8,  t:"14:15 h", name:"Parc del Retiro",                       lat:40.4140, lng:-3.6840},
+    {n:9,  t:"10:00 h", name:"Museo Thyssen-Bornemisza",              lat:40.4160, lng:-3.6948},
+    {n:10, t:"13:45 h", name:"Museo Reina Sofía",                     lat:40.4087, lng:-3.6941},
+    {n:11, t:"17:00 h", name:"Gran Vía",                              lat:40.4200, lng:-3.6975},
+    {n:12, t:"17:30 h", name:"Malasaña · Plaza del Dos de Mayo",     lat:40.4268, lng:-3.7044},
+    {n:13, t:"17:30 h", name:"Chueca",                                lat:40.4225, lng:-3.6980},
+    {n:14, t:"10:00 h", name:"El Rastro · Embajadores",              lat:40.4083, lng:-3.7074},
+    {n:15, t:"11:15 h", name:"La Latina · tapes",                    lat:40.4113, lng:-3.7108},
+    {n:16, t:"18:00 h", name:"Temple de Debod · posta de sol",       lat:40.4240, lng:-3.7178}
+  ];
+
+  const NS = "http://www.w3.org/2000/svg";
+  STOPS.forEach(s => {
+    const [cx, cy] = px(s.lat, s.lng);
+    const g = document.createElementNS(NS, "g");
+    g.style.cursor = "pointer";
+    g.addEventListener("click", () => showMapStop(s));
+
+    const outer = document.createElementNS(NS, "circle");
+    outer.setAttribute("cx", cx); outer.setAttribute("cy", cy); outer.setAttribute("r", "14");
+    outer.setAttribute("fill", "#1B358A"); outer.setAttribute("stroke", "white"); outer.setAttribute("stroke-width", "2");
+
+    const txt = document.createElementNS(NS, "text");
+    txt.setAttribute("x", cx); txt.setAttribute("y", cy);
+    txt.setAttribute("text-anchor", "middle"); txt.setAttribute("dominant-baseline", "middle");
+    txt.setAttribute("fill", "white"); txt.setAttribute("font-size", "10");
+    txt.setAttribute("font-weight", "700");
+    txt.setAttribute("font-family", "Montserrat,system-ui,sans-serif");
+    txt.textContent = s.n;
+
+    const dot = document.createElementNS(NS, "circle");
+    dot.setAttribute("cx", cx); dot.setAttribute("cy", cy); dot.setAttribute("r", "3.5");
+    dot.setAttribute("fill", "#F3C116");
+
+    g.appendChild(outer); g.appendChild(txt); g.appendChild(dot);
+    svg.appendChild(g);
+  });
+
+  document.getElementById("l001").addEventListener("change", e => {
+    document.getElementById("lbl001").classList.toggle("on", e.target.checked);
+    document.getElementById("bus-001").style.display = e.target.checked ? "" : "none";
+  });
+  document.getElementById("l002").addEventListener("change", e => {
+    document.getElementById("lbl002").classList.toggle("on", e.target.checked);
+    document.getElementById("bus-002").style.display = e.target.checked ? "" : "none";
+  });
+}
+
+function showMapStop(s) {
+  const box = document.getElementById("map-info");
+  box.hidden = false;
+  box.innerHTML =
+    `<div class="map-infobox-num">${s.n}</div>` +
+    `<div class="map-infobox-body">` +
+    `<div class="map-infobox-name">${s.name}</div>` +
+    `<div class="map-infobox-time">${s.t}</div>` +
+    `</div>` +
+    `<button class="map-infobox-close" onclick="document.getElementById('map-info').hidden=true">✕</button>`;
+}

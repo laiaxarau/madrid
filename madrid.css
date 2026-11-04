@@ -691,3 +691,64 @@ iframe[src*="netlify.com"],
 img[src*="netlify.com"],
 [data-netlify-badge],
 .netlify-badge { display: none !important; }
+
+/* ══ MAPA ═══════════════════════════════════════════════════ */
+
+/* Capítol mapa (color neutre terracota) */
+.chapter.c-map .chapter-num { background: #7A3F1E; }
+
+/* Botons de línia de bus */
+.bus-layers {
+  display: flex; gap: 10px;
+  padding: 14px 0 10px;
+}
+.bus-toggle {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--font-b); font-size: 13px; font-weight: 700;
+  letter-spacing: .04em; padding: 7px 14px;
+  border-radius: 20px; border: 1.5px solid var(--border);
+  background: var(--surface); color: var(--muted);
+  cursor: pointer; transition: background .15s, color .15s, border-color .15s;
+  user-select: none;
+}
+.bus-toggle input { display: none; }
+.bus-toggle.on { border-color: var(--blue); background: var(--blue); color: white; }
+
+/* Contenidor del SVG */
+.map-frame {
+  width: calc(100% + 2 * max(16px, env(safe-area-inset-left, 0px)));
+  margin-left: calc(-1 * max(16px, env(safe-area-inset-left, 0px)));
+  aspect-ratio: 760 / 700;
+  background: var(--surface);
+  border-top: 1.5px solid var(--border);
+  border-bottom: 1.5px solid var(--border);
+  overflow: hidden;
+}
+.map-frame svg {
+  width: 100%; height: 100%;
+  display: block;
+}
+
+/* Infobox parada */
+.map-infobox {
+  display: flex; align-items: center; gap: 12px;
+  margin-top: 12px; padding: 14px 16px;
+  background: var(--surface); border: 1.5px solid var(--border);
+  border-radius: 14px; box-shadow: 0 4px 16px var(--shadow);
+}
+.map-infobox-num {
+  width: 36px; height: 36px; border-radius: 50%;
+  background: var(--blue); color: white;
+  font-family: var(--font-a); font-size: 15px; font-weight: 700;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.map-infobox-body { flex: 1; display: flex; flex-direction: column; gap: 2px; }
+.map-infobox-name { font-size: 15px; font-weight: 700; color: var(--fg); }
+.map-infobox-time { font-size: 13px; color: var(--muted); }
+.map-infobox-close {
+  font-size: 16px; color: var(--muted); flex-shrink: 0;
+  padding: 6px; border-radius: 50%;
+  transition: background .15s;
+}
+.map-infobox-close:hover { background: var(--border); }

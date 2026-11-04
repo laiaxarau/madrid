@@ -100,6 +100,14 @@
       </div>
       <div class="chapter-arrow">›</div>
     </div>
+    <div class="chapter c-map" onclick="goMap()">
+      <div class="chapter-num"><span class="chapter-emoji">🗺️</span></div>
+      <div class="chapter-body">
+        <div class="chapter-day">Mapa del viatge</div>
+        <div class="chapter-date">16 parades · línies 001 i 002</div>
+      </div>
+      <div class="chapter-arrow">›</div>
+    </div>
   </div>
 
   <!-- Welcome text (al final, per als primers visitants) -->
@@ -127,6 +135,22 @@
     <div class="header-title" id="detail-header"></div>
   </div>
   <div id="detail-content"></div>
+</div>
+
+<!-- ══ MAPA ════════════════════════════════════════════════ -->
+<div class="view" id="v-map">
+  <div class="app-header">
+    <button class="btn-back" onclick="goHome()">←</button>
+    <div class="header-title">MAPA DEL VIATGE</div>
+  </div>
+  <div class="bus-layers">
+    <label class="bus-toggle on" id="lbl001"><input type="checkbox" id="l001" checked> Bus 001</label>
+    <label class="bus-toggle on" id="lbl002"><input type="checkbox" id="l002" checked> Bus 002</label>
+  </div>
+  <div class="map-frame">
+    <svg id="map-svg" viewBox="0 0 760 700" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+  <div class="map-infobox" id="map-info" hidden></div>
 </div>
 
 <!-- ══ SELECTOR ══════════════════════════════════════════ -->
