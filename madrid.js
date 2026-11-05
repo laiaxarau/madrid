@@ -714,10 +714,42 @@ function renderMap() {
   svg.dataset.rendered = "1";
 
   const LNG0=-3.724, LNG1=-3.678, LAT0=40.401, LAT1=40.436, W=760, H=700;
+  function mercY(d) { return Math.log(Math.tan(Math.PI/4 + d*Math.PI/360)); }
+  const MY0 = mercY(LAT0), MY1 = mercY(LAT1);
   function px(lat, lng) {
     return [(lng - LNG0) / (LNG1 - LNG0) * W,
-            (1 - (lat - LAT0) / (LAT1 - LAT0)) * H];
+            (1 - (mercY(lat) - MY0) / (MY1 - MY0)) * H];
   }
+
+  // Carrega tiles OSM directament al SVG
+  const ZOOM = 14, N = 1 << ZOOM;
+  const txMin = Math.floor((LNG0 + 180) / 360 * N);
+  const txMax = Math.floor((LNG1 + 180) / 360 * N);
+  const tyMin = Math.floor((1 - MY1 / Math.PI) / 2 * N);
+  const tyMax = Math.floor((1 - MY0 / Math.PI) / 2 * N);
+  for (let tx = txMin; tx <= txMax; tx++) {
+    for (let ty = tyMin; ty <= tyMax; ty++) {
+      const myN = Math.PI * (1 - 2 * ty / N);
+      const myS = Math.PI * (1 - 2 * (ty + 1) / N);
+      const x1 = (tx / N * 360 - 180 - LNG0) / (LNG1 - LNG0) * W;
+      const x2 = ((tx + 1) / N * 360 - 180 - LNG0) / (LNG1 - LNG0) * W;
+      const y1 = (1 - (myN - MY0) / (MY1 - MY0)) * H;
+      const y2 = (1 - (myS - MY0) / (MY1 - MY0)) * H;
+      const img = document.createElementNS("http://www.w3.org/2000/svg", "image");
+      img.setAttribute("href", `https://tile.openstreetmap.org/${ZOOM}/${tx}/${ty}.png`);
+      img.setAttribute("x", x1); img.setAttribute("y", y1);
+      img.setAttribute("width", x2 - x1); img.setAttribute("height", y2 - y1);
+      img.setAttribute("preserveAspectRatio", "none");
+      svg.appendChild(img);
+    }
+  }
+  // Atribució OSM
+  const attr = document.createElementNS("http://www.w3.org/2000/svg", "text");
+  attr.setAttribute("x", W - 4); attr.setAttribute("y", H - 4);
+  attr.setAttribute("text-anchor", "end"); attr.setAttribute("font-size", "10");
+  attr.setAttribute("fill", "#555");
+  attr.textContent = "© OpenStreetMap contributors";
+  svg.appendChild(attr);
   function polyline(pts, color, dash) {
     const d = pts.map((p, i) => (i ? "L" : "M") + px(p[0], p[1]).join(" ")).join(" ");
     const el = document.createElementNS("http://www.w3.org/2000/svg", "path");

@@ -725,18 +725,7 @@ img[src*="netlify.com"],
   border-bottom: 1.5px solid var(--border);
   overflow: hidden;
 }
-.map-bg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: fill;
-  display: block;
-  pointer-events: none;
-}
 .map-frame svg {
-  position: relative;
-  z-index: 1;
   width: 100%; height: 100%;
   display: block;
 }
