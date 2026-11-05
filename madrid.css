@@ -752,3 +752,23 @@ img[src*="netlify.com"],
   transition: background .15s;
 }
 .map-infobox-close:hover { background: var(--border); }
+.map-plan {
+  padding: 16px;
+  border-top: 1.5px solid var(--border);
+  margin-top: 12px;
+}
+.map-plan-title {
+  font-family: var(--font-a);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.map-plan-img {
+  width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 2px 12px var(--shadow);
+  display: block;
+}
